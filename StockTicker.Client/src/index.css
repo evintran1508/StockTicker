@@ -1,0 +1,323 @@
+:root {
+  --bg-main: #0a0d14;
+  --bg-surface: #101522;
+  --bg-card: #151c2d;
+  --bg-card-hover: #1c253b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: #2563eb;
+  
+  --text-main: #f3f4f6;
+  --text-sub: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* Bảng màu chuẩn chứng khoán VN */
+  --stock-up: #00e676;
+  --stock-down: #ff5252;
+  --stock-ref: #ffd600;
+  --stock-ceil: #c084fc;
+  --stock-floor: #38bdf8;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: #232c3f;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #35425c;
+}
+
+/* Hiệu ứng flash khi khớp lệnh */
+@keyframes flashGreen {
+  0% {
+    background-color: rgba(0, 230, 118, 0.35);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes flashRed {
+  0% {
+    background-color: rgba(255, 82, 82, 0.35);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.flash-up {
+  animation: flashGreen 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.flash-down {
+  animation: flashRed 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.color-up {
+  color: var(--stock-up);
+}
+.color-down {
+  color: var(--stock-down);
+}
+.color-ref {
+  color: var(--stock-ref);
+}
+.color-ceil {
+  color: var(--stock-ceil);
+}
+.color-floor {
+  color: var(--stock-floor);
+}
+
+.bg-up-subtle {
+  background-color: rgba(0, 230, 118, 0.12);
+  color: var(--stock-up);
+}
+.bg-down-subtle {
+  background-color: rgba(255, 82, 82, 0.12);
+  color: var(--stock-down);
+}
+
+/* Utility layout classes */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header-bar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+}
+
+.market-ticker-tape {
+  background: #0d121c;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.dashboard-main {
+  width: 100%;
+  padding: 16px 20px;
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.dashboard-col-table {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.dashboard-col-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+/* Tablet & Desktop (>= 1024px): Bảng giá chiếm 40%, Biểu đồ chiếm 60% */
+@media (min-width: 1024px) {
+  .dashboard-main {
+    padding: 16px 22px;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 4fr 6fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .dashboard-col-table {
+    position: sticky;
+    top: 72px;
+  }
+}
+
+/* Màn hình lớn (>= 1440px / 2K / 4K): Giữ đúng tỷ lệ 40% Bảng giá, 60% Biểu đồ */
+@media (min-width: 1440px) {
+  .dashboard-grid {
+    grid-template-columns: 4fr 6fr;
+    gap: 22px;
+  }
+}
+
+/* Màn hình nhỏ / Mobile (< 1024px): Ưu tiên hiển thị Biểu đồ trước, Bảng giá phía dưới */
+@media (max-width: 1023px) {
+  .dashboard-main {
+    padding: 12px 14px;
+  }
+
+  .dashboard-col-chart {
+    order: 1;
+  }
+
+  .dashboard-col-table {
+    order: 2;
+  }
+}
+
+/* Mobile nhỏ (< 640px) */
+@media (max-width: 640px) {
+  .header-bar {
+    padding: 10px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .market-ticker-tape {
+    padding: 6px 14px;
+    font-size: 11px;
+    gap: 14px;
+  }
+
+  .search-input {
+    width: 150px;
+  }
+  .search-input:focus {
+    width: 190px;
+  }
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+
+.btn:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary {
+  background: #2563eb;
+  border-color: #3b82f6;
+  color: #fff;
+}
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.search-input {
+  background: #0a0d14;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 14px 8px 36px;
+  color: #fff;
+  font-size: 13px;
+  outline: none;
+  width: 220px;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+  width: 260px;
+}
+
+.mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: center;
+}
+
+.stock-table th {
+  padding: 8px 6px;
+  font-weight: 600;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.stock-table td {
+  padding: 8px 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .stock-table {
+    font-size: 11px;
+  }
+  .stock-table th, .stock-table td {
+    padding: 6px 4px;
+  }
+}
