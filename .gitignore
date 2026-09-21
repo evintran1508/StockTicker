@@ -25,3 +25,9 @@ dist-ssr/
 *.log
 .DS_Store
 Thumbs.db
+
+# AI Agent Skills & Tooling (local only)
+.agents/
+.claude/
+agent/
+skills-lock.json
