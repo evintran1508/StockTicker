@@ -31,10 +31,7 @@ A high-performance, real-time Vietnamese stock market (**VN30 / HOSE**) tracking
 - **In-Memory Ring Buffer Architecture:**
   - Maintains a thread-safe ring buffer (`ConcurrentQueue`) of the latest 25 matched transactions per stock in server memory.
   - Delivers instantaneous 0ms cold-start response times when switching tickers, eliminating empty wait states.
-- **Chart-Centric Responsive UI:**
-  - Optimized viewport ratio: **60% Technical Chart & Details** and **40% Compact Order Board**.
-  - Fully responsive across 4K displays, standard laptops, tablets, and smartphones.
-
+    
 ---
 
 ## System Architecture & Data Flow
