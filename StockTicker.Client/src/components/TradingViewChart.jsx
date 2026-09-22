@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart, CandlestickSeries, HistogramSeries, AreaSeries } from 'lightweight-charts';
 import { RefreshCw } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 export default function TradingViewChart({ selectedStock, currentPriceData, timeRange, onTimeRangeChange }) {
   const chartContainerRef = useRef(null);
@@ -47,7 +48,13 @@ export default function TradingViewChart({ selectedStock, currentPriceData, time
         borderColor: 'rgba(255, 255, 255, 0.08)',
         timeVisible: true,
         secondsVisible: false,
+        fixLeftEdge: true,
+        fixRightEdge: true,
+        rightOffset: 0,
+        lockVisibleTimeRangeOnResize: true,
       },
+      handleScroll: false,
+      handleScale: false,
       rightPriceScale: {
         borderColor: 'rgba(255, 255, 255, 0.08)',
         scaleMargins: {
@@ -141,6 +148,7 @@ export default function TradingViewChart({ selectedStock, currentPriceData, time
         const newWidth = chartContainerRef.current.clientWidth;
         const newHeight = window.innerWidth < 640 ? 320 : window.innerWidth < 1024 ? 400 : window.innerWidth < 1440 ? 480 : 540;
         chart.applyOptions({ width: newWidth, height: newHeight });
+        chart.timeScale().fitContent();
       }
     };
     const resizeObserver = new ResizeObserver(handleResize);
@@ -173,7 +181,10 @@ export default function TradingViewChart({ selectedStock, currentPriceData, time
 
     const loadData = async () => {
       try {
-        const res = await fetch(`http://localhost:5049/stocks/${selectedStock}/candles?range=${timeRange}`);
+        const endpoint = API_BASE_URL
+          ? `${API_BASE_URL}/stocks/${selectedStock}/candles?range=${timeRange}`
+          : `/stocks/${selectedStock}/candles?range=${timeRange}`;
+        const res = await fetch(endpoint);
         if (!res.ok) throw new Error('Failed to fetch candles');
         const data = await res.json();
 

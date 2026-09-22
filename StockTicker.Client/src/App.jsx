@@ -4,13 +4,13 @@ import MarketIndices from './components/MarketIndices';
 import StockTable from './components/StockTable';
 import TradingViewChart from './components/TradingViewChart';
 import StockDetailPanel from './components/StockDetailPanel';
+import { API_BASE_URL, SIGNALR_HUB_URL } from './config';
 
 export default function App() {
   const [stocks, setStocks] = useState([]);
   const [selectedSymbol, setSelectedSymbol] = useState('FPT');
   const [timeRange, setTimeRange] = useState('3mo');
   const [isConnected, setIsConnected] = useState(false);
-  const [connectionUrl, setConnectionUrl] = useState('');
   const [flashingRows, setFlashingRows] = useState({});
   const [detailLogs, setDetailLogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,7 +32,8 @@ export default function App() {
 
     // 2. Kéo dữ liệu Ring Buffer mới nhất từ API
     try {
-      const res = await fetch(`http://localhost:5049/stocks/${sym}/trades`);
+      const endpoint = API_BASE_URL ? `${API_BASE_URL}/stocks/${sym}/trades` : `/stocks/${sym}/trades`;
+      const res = await fetch(endpoint);
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
@@ -50,10 +51,11 @@ export default function App() {
   // 1. Tải dữ liệu ban đầu từ REST API & nạp sẵn Trade Logs FPT
   useEffect(() => {
     const fetchInitialData = async () => {
-      const urls = ['https://localhost:7187', 'http://localhost:5049'];
-      for (const url of urls) {
+      const candidates = API_BASE_URL ? [API_BASE_URL, 'http://localhost:5049', 'https://localhost:7187'] : [''];
+      for (const baseUrl of candidates) {
         try {
-          const res = await fetch(`${url}/stocks`);
+          const endpoint = baseUrl ? `${baseUrl}/stocks` : '/stocks';
+          const res = await fetch(endpoint);
           if (res.ok) {
             const data = await res.json();
             setStocks(data);
@@ -71,9 +73,6 @@ export default function App() {
 
   // 2. Thiết lập kết nối SignalR
   useEffect(() => {
-    const primaryUrl = 'https://localhost:7187/stockHub';
-    const fallbackUrl = 'http://localhost:5049/stockHub';
-
     const connectHub = async (url) => {
       const connection = new signalR.HubConnectionBuilder()
         .withUrl(url)
@@ -118,7 +117,6 @@ export default function App() {
       await connection.start();
       connectionRef.current = connection;
       setIsConnected(true);
-      setConnectionUrl(url);
 
       // Join group mặc định FPT
       if (selectedSymbolRef.current) {
@@ -126,12 +124,14 @@ export default function App() {
       }
     };
 
-    connectHub(primaryUrl).catch((err) => {
-      console.warn('Lỗi kết nối HTTPS, chuyển sang HTTP:', err);
-      connectHub(fallbackUrl).catch((fallbackErr) => {
-        console.error('Không thể kết nối SignalR Hub:', fallbackErr);
-        setIsConnected(false);
-      });
+    connectHub(SIGNALR_HUB_URL).catch((err) => {
+      console.warn('Lỗi kết nối primary SignalR, thử fallback:', err);
+      if (SIGNALR_HUB_URL !== 'http://localhost:5049/stockHub') {
+        connectHub('http://localhost:5049/stockHub').catch((fallbackErr) => {
+          console.error('Không thể kết nối SignalR Hub:', fallbackErr);
+          setIsConnected(false);
+        });
+      }
     });
 
     return () => {

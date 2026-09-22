@@ -111,16 +111,16 @@ export default function StockTable({
         <table className="stock-table">
           <thead>
             <tr style={{ background: '#0e121a', color: '#9ca3af', borderBottom: '1px solid var(--border-subtle)' }}>
-              <th style={{ padding: '8px 10px', textAlign: 'left' }}>Mã</th>
-              <th style={{ color: 'var(--stock-ceil)' }}>Trần</th>
-              <th style={{ color: 'var(--stock-floor)' }}>Sàn</th>
-              <th style={{ color: 'var(--stock-ref)' }}>TC</th>
-              <th style={{ background: '#141a27', color: '#fff' }}>Khớp</th>
-              <th style={{ background: '#141a27' }}>+/-</th>
-              <th style={{ background: '#141a27' }}>%</th>
-              <th style={{ color: '#9ca3af' }}>Cao</th>
-              <th style={{ color: '#9ca3af' }}>Thấp</th>
-              <th style={{ padding: '8px 10px', textAlign: 'right' }}>Tổng KL</th>
+              <th style={{ padding: '7px 6px', textAlign: 'left' }}>Mã</th>
+              <th style={{ color: 'var(--stock-ceil)', padding: '7px 4px' }}>Trần</th>
+              <th style={{ color: 'var(--stock-floor)', padding: '7px 4px' }}>Sàn</th>
+              <th style={{ color: 'var(--stock-ref)', padding: '7px 4px' }}>TC</th>
+              <th style={{ background: '#141a27', color: '#fff', padding: '7px 5px' }}>Khớp</th>
+              <th style={{ background: '#141a27', padding: '7px 4px' }}>+/-</th>
+              <th style={{ background: '#141a27', padding: '7px 4px' }}>%</th>
+              <th style={{ color: '#9ca3af', padding: '7px 4px' }}>Cao</th>
+              <th style={{ color: '#9ca3af', padding: '7px 4px' }}>Thấp</th>
+              <th style={{ padding: '7px 6px', textAlign: 'right' }}>Tổng KL</th>
             </tr>
           </thead>
           <tbody>
@@ -143,9 +143,9 @@ export default function StockTable({
                   }}
                 >
                   {/* Mã CK & Tên */}
-                  <td style={{ padding: '8px 10px', textAlign: 'left' }}>
-                    <div style={{ fontWeight: 700, fontSize: '13px', color: '#fff' }}>{stock.symbol}</div>
-                    <div style={{ fontSize: '11px', color: '#6b7280', maxWidth: '110px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <td style={{ padding: '7px 6px', textAlign: 'left' }}>
+                    <div style={{ fontWeight: 700, fontSize: '12px', color: '#fff' }}>{stock.symbol}</div>
+                    <div style={{ fontSize: '10px', color: '#6b7280', maxWidth: '85px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {stock.companyName}
                     </div>
                   </td>
@@ -200,7 +200,7 @@ export default function StockTable({
                   </td>
 
                   {/* Tổng KL */}
-                  <td className="mono-num" style={{ padding: '8px 10px', textAlign: 'right', fontWeight: 500, color: '#e5e7eb' }}>
+                  <td className="mono-num" style={{ padding: '7px 6px', textAlign: 'right', fontWeight: 500, color: '#e5e7eb' }}>
                     {stock.volume?.toLocaleString()}
                   </td>
                 </tr>

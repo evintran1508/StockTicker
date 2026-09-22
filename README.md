@@ -1,4 +1,4 @@
-# 📈 VN30 Real-Time Stock Trading Terminal
+# VN30 Real-Time Stock Trading Terminal
 
 [![.NET 8](https://img.shields.io/badge/.NET-8.0-512bd4.svg?style=flat&logo=dotnet)](https://dotnet.microsoft.com/)
 [![React 19](https://img.shields.io/badge/React-19.0-61dafb.svg?style=flat&logo=react)](https://react.dev/)
@@ -10,7 +10,7 @@ A high-performance, real-time Vietnamese stock market (**VN30 / HOSE**) tracking
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 - **100% Genuine Market Data:** Streams live quotes and historical daily/intraday candlestick data (OHLCV) directly from the exchange without fake ticks or mock data.
 - **Strict HOSE Trading Regulations Compliance:**
@@ -37,7 +37,7 @@ A high-performance, real-time Vietnamese stock market (**VN30 / HOSE**) tracking
 
 ---
 
-## 🏗️ System Architecture & Data Flow
+## System Architecture & Data Flow
 
 ```mermaid
 sequenceDiagram
@@ -80,7 +80,7 @@ sequenceDiagram
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend (ASP.NET Core 8 Web API)
 - **Runtime:** .NET 8.0 SDK
@@ -100,7 +100,7 @@ sequenceDiagram
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 StockTicker/
@@ -123,13 +123,31 @@ StockTicker/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) or later
 - [Node.js](https://nodejs.org/) (v18 or higher) & npm
 
-### 1. Run the Backend (.NET API)
+### 1. Quick Start with Docker (Recommended)
+You can build and spin up the entire application stack (Backend + Frontend + Nginx Reverse Proxy) with a single command:
+
+```powershell
+docker compose up --build -d
+```
+- **Web App (Frontend UI):** `http://localhost:3000`
+- **Backend API & Swagger:** `http://localhost:5000/swagger`
+
+To stop the containers:
+```powershell
+docker compose down
+```
+
+---
+
+### 2. Manual Local Development
+
+#### A. Run the Backend (.NET API)
 ```powershell
 cd StockTicker.Api
 dotnet restore
@@ -137,7 +155,7 @@ dotnet run
 ```
 > The API server will be listening at: `http://localhost:5049` (SignalR Hub endpoint: `/stockHub`)
 
-### 2. Run the Frontend (React Client)
+#### B. Run the Frontend (React Client)
 ```powershell
 cd StockTicker.Client
 npm install
@@ -147,6 +165,6 @@ npm run dev
 
 ---
 
-## 📝 Academic Context
+## Academic Context
 
 Developed as part of the **PRN212 (C# and .NET Core)** curriculum at **FPT University**. Demonstrates enterprise-grade .NET programming paradigms including asynchronous programming, clean architecture, real-time communication, and responsive modern web interfaces.
